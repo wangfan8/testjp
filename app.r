@@ -10,12 +10,13 @@ ui <- shinyUI(fluidPage(
     sidebarPanel(
       h1(textOutput("question")),
       textInput("answer", "answer", value = "a"),
-      actionButton("nextOne", "Next!")
+      actionButton("nextOne", "Next!"),
+      radioButtons("showAnswer", "Show Answer?", c("N","Y"))
     ),
     
     mainPanel(
-      textOutput("isCorrect")
-      
+      textOutput("isCorrect"),
+      textOutput("answer")
     )
   )
 ))
@@ -31,6 +32,13 @@ server <- shinyServer(function(input, output) {
   observeEvent(input$nextOne, {
     index$index <- runif(1,1,72)
   })
+  
+  output$answer <- reactive({
+    if (input$showAnswer == "N") 
+      return("?")
+    else 
+      return(data$Romaji[index$index])
+  })  
   
   output$question <- renderText(data$Hiragana[index$index])
   
