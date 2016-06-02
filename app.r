@@ -3,7 +3,7 @@ library(shiny)
 ui <- shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Hiragana ひらがな"),
+  titlePanel("Hiragana & Katakana ひらがな & カタカナ" ),
   
   # Sidebar with a slider input for number of bins
   sidebarLayout(
@@ -11,6 +11,7 @@ ui <- shinyUI(fluidPage(
       h1(textOutput("question")),
       textInput("answer", "answer", value = "a"),
       actionButton("nextOne", "Next!"),
+      radioButtons("HorK", "H or K:", c("H","K")),
       radioButtons("showAnswer", "Show Answer?", c("N","Y"))
     ),
     
@@ -25,7 +26,7 @@ ui <- shinyUI(fluidPage(
 server <- shinyServer(function(input, output) {
   
   data <- read.table("data.txt", header = TRUE
-                     , sep=",", colClasses = c("character", "character"))
+                     , sep=",", colClasses = c("character", "character", "character"))
   
   index <- reactiveValues(index = 1)
   
@@ -40,7 +41,12 @@ server <- shinyServer(function(input, output) {
       return(data$Romaji[index$index])
   })  
   
-  output$question <- renderText(data$Hiragana[index$index])
+  output$question <- renderText(
+      if (input$HorK == "H")
+        data$Hiragana[index$index]
+      else 
+        data$Katakana[index$index]
+      )
   
   output$isCorrect <- reactive({
     if (tolower(input$answer) == data$Romaji[index$index])
