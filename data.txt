@@ -9,7 +9,7 @@ Katakana,Hiragana,Romaji
 ヤ,や,ya
 ラ,ら,ra
 ワ,わ,wa
-ｎ,ん,n
+ン,ん,n
 イ,い,i
 キ,き,ki
 シ,し,shi
